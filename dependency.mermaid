@@ -1,17 +1,32 @@
 graph LR
-subgraph Products
-    A[/api/products GET] --> B[/api/products/{id} GET]
-    C[/api/products POST]
-    D[/api/products/{id} PUT]
+subgraph "Products_API"
+    A[GET /api/products] --> B{GET /api/products/{id}}
+    A --> C[POST /api/products]
+    B --> D[PUT /api/products/{id}]
+    B --> E[DELETE /api/products/{id}]
+    F[GET /products] --> B
+    F --> A
+    G[POST /products] --> C
+    H[PUT /products/:id] --> D
+    I[DELETE /products/:id] --> E
 end
-subgraph Users
-    E[/api/users GET] --> F[/api/users/{id} GET]
-    G[/api/users POST]
-    H[/api/users/{id} PUT]
-    I[/api/users/{id} DELETE]
-    J[/users GET] --> K[/users/:id GET]
-    L[/users/register POST]
-    M[/users/:id/cart POST] --> K[/users/:id GET]
-    N[/users/:id/checkout POST] --> K[/users/:id GET]
+subgraph "Users_API"
+    J[GET /api/users] --> K{GET /api/users/{id}}
+    J --> L[POST /api/users]
+    K --> M[PUT /api/users/{id}]
+    K --> N[DELETE /api/users/{id}]
+    O[GET /users] --> K
+    P[GET /users/:id] --> K
+    Q[POST /users/register] --> L
+    R[POST /users/:id/cart] --> K
+    S[POST /users/:id/checkout] --> K
 end
+subgraph "Root_API"
+    Z[GET /] --> A
+    Z --> J
+end
+
+style A fill:#ccf,stroke:#333,stroke-width:2px
+style J fill:#ccf,stroke:#333,stroke-width:2px
+style Z fill:#ccf,stroke:#333,stroke-width:2px
 
