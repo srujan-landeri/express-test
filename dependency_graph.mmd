@@ -1,68 +1,48 @@
 graph LR
-    subgraph Client Layer
-        direction LR
-        Client1[Web App] --> API_Gateway
-        Client2[Mobile App] --> API_Gateway
-    end
-    
-    subgraph API Gateway Layer
-        direction LR
-        API_Gateway((API Gateway))
-    end
-    
-    subgraph Core Services Layer
-        direction LR
-        subgraph Product Service
-            Product_Service[Product Service]
-            Product_Service --> Product_DB((Product Database))
-            Product_Service --> Message_Queue
-        end
-        subgraph User Service
-            User_Service[User Service]
-            User_Service --> User_DB((User Database))
-            User_Service --> Message_Queue
-            User_Service --> Product_Service
-        end
-        subgraph Order Service
-            Order_Service[Order Service]
-            Order_Service --> Order_DB((Order Database))
-            Order_Service --> User_Service
-            Order_Service --> Message_Queue
-        end
-
-    end
-    
-    subgraph Database Layer
-        direction LR
-        Product_DB
-        User_DB
-        Order_DB
-    end
-    
-    subgraph Message Broker/Queue
-        direction LR
-        Message_Queue{Message Queue}
-    end
-    
-    subgraph External Services
-        direction LR
-        External_Service[Payment Gateway]
-        Order_Service --> External_Service
-    end
-    
-    API_Gateway --> Product_Service
-    API_Gateway --> User_Service
-    API_Gateway --> Order_Service
-
-    style Client1 fill:#f9f,stroke:#333,stroke-width:2px
-    style Client2 fill:#f9f,stroke:#333,stroke-width:2px
-    style API_Gateway fill:#ccf,stroke:#333,stroke-width:2px
-    style Product_Service fill:#fcf,stroke:#333,stroke-width:2px
-    style User_Service fill:#fcf,stroke:#333,stroke-width:2px
-    style Order_Service fill:#fcf,stroke:#333,stroke-width:2px
-    style Product_DB fill:#ccf,stroke:#333,stroke-width:2px
-    style User_DB fill:#ccf,stroke:#333,stroke-width:2px
-    style Order_DB fill:#ccf,stroke:#333,stroke-width:2px
-    style Message_Queue fill:#ccf,stroke:#333,stroke-width:2px
-    style External_Service fill:#fcf,stroke:#333,stroke-width:2px
+subgraph ClientLayer["Client Layer", fill:#ccf,stroke:#000,stroke-width:2px]
+    Web_App["Web App"]
+    Mobile_App["Mobile App"]
+end
+subgraph APIGatewayLayer["API Gateway Layer", fill:#fcc,stroke:#000,stroke-width:2px]
+    API_Gateway["API Gateway"]
+end
+subgraph CoreServicesLayer["Core Services Layer", fill:#cfc,stroke:#000,stroke-width:2px]
+    ProductService["Product Service"]
+    UserService["User Service"]
+    OrderService["Order Service"]
+    CartService["Cart Service"]
+end
+subgraph DatabaseLayer["Database Layer", fill:#ccf,stroke:#000,stroke-width:2px]
+    ProductDB["Product Database"]
+    UserDB["User Database"]
+    OrderDB["Order Database"]
+end
+subgraph MessageBroker["Message Broker", fill:#fcf,stroke:#000,stroke-width:2px]
+    MessageQueue["Message Queue"]
+end
+subgraph ExternalServices["External Services",fill:#ff9,stroke:#000,stroke-width:2px]
+    PaymentGateway["Payment Gateway"]
+    EmailService["Email Service"]
+end
+Web_App --> API_Gateway
+Mobile_App --> API_Gateway
+API_Gateway --> ProductService
+API_Gateway --> UserService
+API_Gateway --> OrderService
+API_Gateway --> CartService
+ProductService --> ProductDB
+UserService --> UserDB
+OrderService --> OrderDB
+OrderService --> UserDB
+CartService --> UserDB
+CartService --> ProductDB
+UserService --> MessageQueue
+OrderService --> MessageQueue
+MessageQueue --> PaymentGateway
+MessageQueue --> EmailService
+ProductService -.-> MessageQueue
+style ProductService fill:#ccf,stroke:#000,stroke-width:2px
+style UserService fill:#ccf,stroke:#000,stroke-width:2px
+style OrderService fill:#ccf,stroke:#000,stroke-width:2px
+style CartService fill:#ccf,stroke:#000,stroke-width:2px
 
