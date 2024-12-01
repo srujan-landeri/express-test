@@ -1,48 +1,41 @@
-```mermaid
 graph LR
-    subgraph app_js
-        get_api_products("/api/products[GET]")
-        get_api_users("/api/users[GET]")
-        post_api_products("/api/products[POST]")
-        post_api_users("/api/users[POST]")
-        get_api_products_id("/api/products/{id}[GET]")
-        get_api_users_id("/api/users/{id}[GET]")
-        put_api_products_id("/api/products/{id}[PUT]")
-        put_api_users_id("/api/users/{id}[PUT]")
-        delete_api_products_id("/api/products/{id}[DELETE]")
-        delete_api_users_id("/api/users/{id}[DELETE]")
-    end
-    subgraph routes_productRoutes_js
-        get_products("/products[GET]")
-        get_products_id("/products/:id[GET]")
-        post_products("/products[POST]")
-        put_products_id("/products/:id[PUT]")
-        delete_products_id("/products/:id[DELETE]")
-    end
-    subgraph routes_userRoutes_js
-        get_users("/users[GET]")
-        get_users_id("/users/:id[GET]")
-        post_register("/register[POST]")
-        post_users_id_cart("/users/:id/cart[POST]")
-        post_users_id_checkout("/users/:id/checkout[POST]")
-    end
+  subgraph app_js
+    api_products_get[/api/products GET/]
+    api_users_get[/api/users GET/]
+    api_products_post[/api/products POST/]
+    api_users_post[/api/users POST/]
+    api_users_userId_get[/api/users/{userId} GET/]
+    api_products_productId_get[/api/products/{productId} GET/]
+    api_products_productId_put[/api/products/{productId} PUT/]
+    api_products_productId_delete[/api/products/{productId} DELETE/]
+    api_users_userId_put[/api/users/{userId} PUT/]
+    api_login_post[/api/login POST/]
+    api_logout_post[/api/logout POST/]
+    api_me_get[/api/me GET/]
+  end
+  subgraph routes_productRoutes_js
+    products_get[/products GET/]
+    products_id_get[/products/:id GET/]
+    products_post[/products POST/]
+    products_id_put[/products/:id PUT/]
+    products_id_delete[/products/:id DELETE/]
+  end
+  subgraph routes_userRoutes_js
+    register_post[/register POST/]
+    users_get[/ GET/]
+    users_id_get[/:id GET/]
+    users_id_cart_post[/:id/cart POST/]
+    users_id_checkout_post[/:id/checkout POST/]
+  end
 
-    get_api_products --> post_api_products
-    get_api_products --> get_api_products_id
-    get_api_products_id --> put_api_products_id
-    put_api_products_id --> delete_api_products_id
-
-    get_api_users --> post_api_users
-    get_api_users --> get_api_users_id
-    get_api_users_id --> put_api_users_id
-    put_api_users_id --> delete_api_users_id
-
-    get_products --> get_products_id
-    get_products_id --> put_products_id
-    put_products_id --> delete_products_id
-    post_products -.-> get_products
-
-    get_users --> get_users_id
-    post_register -.-> get_users
-    post_users_id_cart -.-> post_users_id_checkout
-```
+  api_products_get --> products_get
+  api_products_post --> products_post
+  api_products_productId_get --> products_id_get
+  api_products_productId_put --> products_id_put
+  api_products_productId_delete --> products_id_delete
+  api_users_post --> register_post
+  api_users_get --> users_get
+  api_users_userId_get --> users_id_get
+  api_users_userId_put --> users_id_get
+  api_login_post --> users_get
+  api_me_get --> users_id_get
