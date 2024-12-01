@@ -1,48 +1,43 @@
 graph LR
-subgraph ClientLayer["Client Layer", fill:#ccf,stroke:#000,stroke-width:2px]
-    Web_App["Web App"]
-    Mobile_App["Mobile App"]
+subgraph Client Layer
+    A[Web/Mobile Apps]
 end
-subgraph APIGatewayLayer["API Gateway Layer", fill:#fcc,stroke:#000,stroke-width:2px]
-    API_Gateway["API Gateway"]
+subgraph API Gateway Layer
+    B((API Gateway))
 end
-subgraph CoreServicesLayer["Core Services Layer", fill:#cfc,stroke:#000,stroke-width:2px]
-    ProductService["Product Service"]
-    UserService["User Service"]
-    OrderService["Order Service"]
-    CartService["Cart Service"]
+subgraph Core Services Layer
+    C{Product Service}
+    D{User Service}
+    E{Order Service}
 end
-subgraph DatabaseLayer["Database Layer", fill:#ccf,stroke:#000,stroke-width:2px]
-    ProductDB["Product Database"]
-    UserDB["User Database"]
-    OrderDB["Order Database"]
+subgraph Database Layer
+    F[Product Database]
+    G[User Database]
+    H[Order Database]
 end
-subgraph MessageBroker["Message Broker", fill:#fcf,stroke:#000,stroke-width:2px]
-    MessageQueue["Message Queue"]
+subgraph Message Broker
+    I[Message Queue]
 end
-subgraph ExternalServices["External Services",fill:#ff9,stroke:#000,stroke-width:2px]
-    PaymentGateway["Payment Gateway"]
-    EmailService["Email Service"]
+A --> B
+B --> C
+B --> D
+C --> F
+D --> G
+C -.-> I
+D -.-> I
+I --> E
+E --> H
+subgraph External Services
+    J[Payment Gateway]
 end
-Web_App --> API_Gateway
-Mobile_App --> API_Gateway
-API_Gateway --> ProductService
-API_Gateway --> UserService
-API_Gateway --> OrderService
-API_Gateway --> CartService
-ProductService --> ProductDB
-UserService --> UserDB
-OrderService --> OrderDB
-OrderService --> UserDB
-CartService --> UserDB
-CartService --> ProductDB
-UserService --> MessageQueue
-OrderService --> MessageQueue
-MessageQueue --> PaymentGateway
-MessageQueue --> EmailService
-ProductService -.-> MessageQueue
-style ProductService fill:#ccf,stroke:#000,stroke-width:2px
-style UserService fill:#ccf,stroke:#000,stroke-width:2px
-style OrderService fill:#ccf,stroke:#000,stroke-width:2px
-style CartService fill:#ccf,stroke:#000,stroke-width:2px
+E --> J
+
+style C fill:#ccf,stroke:#333,stroke-width:2px
+style D fill:#ccf,stroke:#333,stroke-width:2px
+style E fill:#ccf,stroke:#333,stroke-width:2px
+style F fill:#ccf,stroke:#333,stroke-width:2px
+style G fill:#ccf,stroke:#333,stroke-width:2px
+style H fill:#ccf,stroke:#333,stroke-width:2px
+style I fill:#ccf,stroke:#333,stroke-width:2px
+style J fill:#ccf,stroke:#333,stroke-width:2px
 
