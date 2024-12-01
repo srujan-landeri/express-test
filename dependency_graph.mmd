@@ -1,43 +1,50 @@
 graph LR
-subgraph Client Layer
-    A[Web/Mobile Apps]
+subgraph Users
+    users_get["GET /api/users"]
+    users_post["POST /api/users"]
+    users_get_id["GET /api/users/{id}"]
+    users_put_id["PUT /api/users/{id}"]
+    users_delete_id["DELETE /api/users/{id}"]
+    users_get_all["GET /users"]
+    users_get_id_profile["GET /users/{id}"]
+    users_post_register["POST /users/register"]
+    users_post_cart["POST /users/{id}/cart"]
+    users_post_checkout["POST /users/{id}/checkout"]
 end
-subgraph API Gateway Layer
-    B((API Gateway))
+subgraph Products
+    products_get["GET /api/products"]
+    products_post["POST /api/products"]
+    products_get_id["GET /api/products/{id}"]
+    products_put_id["PUT /api/products/{id}"]
+    products_delete_id["DELETE /api/products/{id}"]
+    products_get_all["GET /products"]
+    products_get_id_single["GET /products/{id}"]
+    products_post_create["POST /products"]
+    products_put_update["PUT /products/{id}"]
+    products_delete_product["DELETE /products/{id}"]
 end
-subgraph Core Services Layer
-    C{Product Service}
-    D{User Service}
-    E{Order Service}
-end
-subgraph Database Layer
-    F[Product Database]
-    G[User Database]
-    H[Order Database]
-end
-subgraph Message Broker
-    I[Message Queue]
-end
-A --> B
-B --> C
-B --> D
-C --> F
-D --> G
-C -.-> I
-D -.-> I
-I --> E
-E --> H
-subgraph External Services
-    J[Payment Gateway]
-end
-E --> J
 
-style C fill:#ccf,stroke:#333,stroke-width:2px
-style D fill:#ccf,stroke:#333,stroke-width:2px
-style E fill:#ccf,stroke:#333,stroke-width:2px
-style F fill:#ccf,stroke:#333,stroke-width:2px
-style G fill:#ccf,stroke:#333,stroke-width:2px
-style H fill:#ccf,stroke:#333,stroke-width:2px
-style I fill:#ccf,stroke:#333,stroke-width:2px
-style J fill:#ccf,stroke:#333,stroke-width:2px
+users_post --> users_get
+users_post --> users_get_id
+users_get_id --> users_put_id
+users_get_id --> users_delete_id
+users_get --> users_get_all
+users_get_id --> users_get_id_profile
+users_post --> users_post_register
+users_post_register --> users_get_all
+users_post_register --> users_get_id_profile
+users_post_cart --> users_get_id_profile
+users_post_checkout --> users_get_id_profile
+products_post --> products_get
+products_post --> products_get_id
+products_get_id --> products_put_id
+products_get_id --> products_delete_id
+products_get --> products_get_all
+products_get_id --> products_get_id_single
+products_post --> products_post_create
+products_put_id --> products_put_update
+products_delete_id --> products_delete_product
+
+users_post_cart --> products_get_id_single
+users_post_checkout --> users_post_cart
 
