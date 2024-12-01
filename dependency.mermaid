@@ -1,32 +1,48 @@
+```mermaid
 graph LR
-subgraph "Products_API"
-    A[GET /api/products] --> B{GET /api/products/{id}}
-    A --> C[POST /api/products]
-    B --> D[PUT /api/products/{id}]
-    B --> E[DELETE /api/products/{id}]
-    F[GET /products] --> B
-    F --> A
-    G[POST /products] --> C
-    H[PUT /products/:id] --> D
-    I[DELETE /products/:id] --> E
-end
-subgraph "Users_API"
-    J[GET /api/users] --> K{GET /api/users/{id}}
-    J --> L[POST /api/users]
-    K --> M[PUT /api/users/{id}]
-    K --> N[DELETE /api/users/{id}]
-    O[GET /users] --> K
-    P[GET /users/:id] --> K
-    Q[POST /users/register] --> L
-    R[POST /users/:id/cart] --> K
-    S[POST /users/:id/checkout] --> K
-end
-subgraph "Root_API"
-    Z[GET /] --> A
-    Z --> J
-end
+    subgraph app_js
+        get_api_products("/api/products[GET]")
+        get_api_users("/api/users[GET]")
+        post_api_products("/api/products[POST]")
+        post_api_users("/api/users[POST]")
+        get_api_products_id("/api/products/{id}[GET]")
+        get_api_users_id("/api/users/{id}[GET]")
+        put_api_products_id("/api/products/{id}[PUT]")
+        put_api_users_id("/api/users/{id}[PUT]")
+        delete_api_products_id("/api/products/{id}[DELETE]")
+        delete_api_users_id("/api/users/{id}[DELETE]")
+    end
+    subgraph routes_productRoutes_js
+        get_products("/products[GET]")
+        get_products_id("/products/:id[GET]")
+        post_products("/products[POST]")
+        put_products_id("/products/:id[PUT]")
+        delete_products_id("/products/:id[DELETE]")
+    end
+    subgraph routes_userRoutes_js
+        get_users("/users[GET]")
+        get_users_id("/users/:id[GET]")
+        post_register("/register[POST]")
+        post_users_id_cart("/users/:id/cart[POST]")
+        post_users_id_checkout("/users/:id/checkout[POST]")
+    end
 
-style A fill:#ccf,stroke:#333,stroke-width:2px
-style J fill:#ccf,stroke:#333,stroke-width:2px
-style Z fill:#ccf,stroke:#333,stroke-width:2px
+    get_api_products --> post_api_products
+    get_api_products --> get_api_products_id
+    get_api_products_id --> put_api_products_id
+    put_api_products_id --> delete_api_products_id
 
+    get_api_users --> post_api_users
+    get_api_users --> get_api_users_id
+    get_api_users_id --> put_api_users_id
+    put_api_users_id --> delete_api_users_id
+
+    get_products --> get_products_id
+    get_products_id --> put_products_id
+    put_products_id --> delete_products_id
+    post_products -.-> get_products
+
+    get_users --> get_users_id
+    post_register -.-> get_users
+    post_users_id_cart -.-> post_users_id_checkout
+```
