@@ -5,272 +5,261 @@ info:
 paths:
   /api/products:
     get:
-      summary: Retrieve a list of all products.
+      summary: Retrieves a list of all products.
       tags:
         - Products
-      responses:
-        '200':
-          description: A list of product objects
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Product'
-        '500':
-          description: Internal Server Error
     post:
-      summary: Create a new product.
+      summary: Creates a new product.
       tags:
         - Products
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Product'
-      responses:
-        '201':
-          description: The newly created product
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Product'
-        '400':
-          description: Invalid request data
-        '500':
-          description: Internal Server Error
+      parameters:
+        - name: product_name
+          in: query
+          schema:
+            type: string
+        - name: product_description
+          in: query
+          schema:
+            type: string
   /api/products/{id}:
     get:
-      summary: Retrieve a single product by ID.
+      summary: Retrieves a single product by ID.
       tags:
         - Products
       parameters:
-        - in: path
-          name: id
+        - name: id
+          in: path
           schema:
-            type: string
+            type: integer
           required: true
-          description: The ID of the product to retrieve
-      responses:
-        '200':
-          description: A product object
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Product'
-        '404':
-          description: Product not found
-        '500':
-          description: Internal Server Error
     put:
-      summary: Update an existing product.
+      summary: Updates a product by ID.
       tags:
         - Products
       parameters:
-        - in: path
-          name: id
+        - name: id
+          in: path
           schema:
-            type: string
+            type: integer
           required: true
-          description: The ID of the product to update
       requestBody:
         required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Product'
-      responses:
-        '200':
-          description: The updated product
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Product'
-        '404':
-          description: Product not found
-        '400':
-          description: Invalid request data
-        '500':
-          description: Internal Server Error
-  /api/users:
-    get:
-      summary: Retrieve a list of all users.
-      tags:
-        - Users
-      responses:
-        '200':
-          description: A list of user objects
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/User'
-        '500':
-          description: Internal Server Error
-    post:
-      summary: Create a new user.
-      tags:
-        - Users
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/User'
-      responses:
-        '201':
-          description: The newly created user
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-        '400':
-          description: Invalid request data
-        '500':
-          description: Internal Server Error
-  /api/users/{id}:
-    get:
-      summary: Retrieve a single user by ID.
-      tags:
-        - Users
-      parameters:
-        - in: path
-          name: id
-          schema:
-            type: string
-          required: true
-          description: The ID of the user to retrieve
-      responses:
-        '200':
-          description: A user object
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-        '404':
-          description: User not found
-        '500':
-          description: Internal Server Error
-    put:
-      summary: Update an existing user.
-      tags:
-        - Users
-      parameters:
-        - in: path
-          name: id
-          schema:
-            type: string
-          required: true
-          description: The ID of the user to update
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/User'
-      responses:
-        '200':
-          description: The updated user
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-        '404':
-          description: User not found
-        '400':
-          description: Invalid request data
-        '500':
-          description: Internal Server Error
-    delete:
-      summary: Delete a user by ID.
-      tags:
-        - Users
-      parameters:
-        - in: path
-          name: id
-          schema:
-            type: string
-          required: true
-          description: The ID of the user to delete
-      responses:
-        '204':
-          description: No content
-        '404':
-          description: User not found
-        '500':
-          description: Internal Server Error
-  /products:
-    get:
-      summary: Retrieve products by category, min price and max price.
-      parameters:
-        - in: query
-          name: category
-          schema:
-            type: string
-        - in: query
-          name: minPrice
-          schema:
-            type: number
-        - in: query
-          name: maxPrice
-          schema:
-            type: number
-    post:
-      summary: Create a new product.
-      requestBody:
         content:
           application/json:
             schema:
               type: object
               properties:
-                name:
+                product_name:
                   type: string
-                price:
-                  type: number
-                stock:
-                  type: integer
-  /products/{id}:
+                product_description:
+                  type: string
+    delete:
+      summary: Deletes a product by ID.
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+          required: true
+  /api/users:
     get:
-      summary: Retrieve a single product by its ID.
+      summary: Retrieves a list of all users.
+      tags:
+        - Users
+    post:
+      summary: Creates a new user.
+      tags:
+        - Users
       parameters:
-        - in: path
-          name: id
+        - name: username
+          in: query
           schema:
-            type: integer
-          required: true
-          description: The ID of the product to retrieve
-    put:
-      summary: Update a product.
-      parameters:
-        - in: path
-          name: id
+            type: string
+        - name: email
+          in: query
           schema:
-            type: integer
-          required: true
-          description: The ID of the product to update
+            type: string
       requestBody:
+        required: true
         content:
           application/json:
             schema:
               type: object
-    delete:
-      summary: Delete a product.
+              properties:
+                password:
+                  type: string
+  /api/users/{id}:
+    get:
+      summary: Retrieves a single user by ID.
+      tags:
+        - Users
       parameters:
-        - in: path
-          name: id
+        - name: id
+          in: path
           schema:
             type: integer
           required: true
-          description: The ID of the product to delete
-  /users:
-    get:
-      summary: Retrieve a list of all users with minimal information for security.
+    put:
+      summary: Updates a user by ID.
       tags:
-        - users
+        - Users
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                email:
+                  type: string
+    delete:
+      summary: Deletes a user by ID.
+      tags:
+        - Users
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+          required: true
+  /:
+    get:
+      summary: Returns a message with available endpoints.
+      tags:
+        - Root
+  /products:
+    get:
+      summary: Retrieve a list of products matching the provided filters.
+      tags:
+        - Products
+      parameters:
+        - name: category
+          in: query
+          schema:
+            type: string
+          description: Filter products by category (e.g., 'Electronics')
+        - name: minPrice
+          in: query
+          schema:
+            type: number
+          description: Minimum price filter
+        - name: maxPrice
+          in: query
+          schema:
+            type: number
+          description: Maximum price filter
       responses:
         '200':
+          description: Success response
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/product'
+        '400':
+          description: Bad request response
+    post:
+      summary: Create a new product.
+      tags:
+        - Products
+      parameters:
+        - name: stock
+          in: query
+          schema:
+            type: integer
+          description: Initial stock quantity (optional)
+        - name: price
+          in: query
+          schema:
+            type: number
+          description: Product price
+      responses:
+        '201':
+          description: Created product response
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/product'
+        '400':
+          description: Bad request response
+  /products/{id}:
+    get:
+      summary: Retrieve a single product by its ID.
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+          description: Product ID
+          required: true
+      responses:
+        '200':
+          description: Success response
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/product'
+        '404':
+          description: Product not found response
+    put:
+      summary: Update an existing product by its ID.
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+          description: Product ID
+          required: true
+      responses:
+        '200':
+          description: Success response
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/product'
+        '404':
+          description: Product not found response
+    delete:
+      summary: Delete a product by its ID.
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+          description: Product ID
+          required: true
+      responses:
+        '200':
+          description: Success response
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/product'
+        '404':
+          description: Product not found response
+  /users:
+    get:
+      summary: Retrieves a list of all users with minimal information for security.
+      tags:
+        - Users
+      responses:
+        '200':
+          description: Success
           content:
             application/json:
               schema:
@@ -290,18 +279,19 @@ paths:
                     - email
   /users/{id}:
     get:
-      summary: Retrieve a user's profile by ID.
+      summary: Retrieves the profile of a specific user, excluding sensitive information.
       tags:
-        - users
+        - Users
       parameters:
-        - in: path
-          name: id
+        - name: id
+          in: path
           schema:
             type: integer
           required: true
-          description: The ID of the user to retrieve
+          description: User ID
       responses:
         '200':
+          description: Success
           content:
             application/json:
               schema:
@@ -319,10 +309,11 @@ paths:
                   - email
   /users/register:
     post:
-      summary: Register a new user with username, email, and password.
+      summary: Registers a new user with the provided information.
       tags:
-        - users
+        - Users
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -339,7 +330,8 @@ paths:
                 - email
                 - password
       responses:
-        '200':
+        '201':
+          description: User registered successfully
           content:
             application/json:
               schema:
@@ -351,24 +343,37 @@ paths:
                     type: string
                   email:
                     type: string
+                  password:
+                    type: string
                 required:
                   - id
                   - username
                   - email
   /users/{id}/cart:
     post:
-      summary: Add an item to a user's cart by ID.
+      summary: Adds a product to the cart of a specific user.
       tags:
-        - users
-        - cart
+        - Users
       parameters:
-        - in: path
-          name: id
+        - name: id
+          in: path
           schema:
             type: integer
           required: true
-          description: The ID of the user to retrieve
+          description: User ID
+        - name: productId
+          in: body
+          schema:
+            type: string
+          required: true
+          description: Product ID
+        - name: quantity
+          in: body
+          schema:
+            type: integer
+          description: Quantity
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -382,6 +387,7 @@ paths:
                 - productId
       responses:
         '200':
+          description: Success
           content:
             application/json:
               schema:
@@ -393,24 +399,27 @@ paths:
                       type: string
                     quantity:
                       type: integer
-                  required:
-                    - productId
-                    - quantity
   /users/{id}/checkout:
     post:
-      summary: Create a new order and checkout by ID.
+      summary: Creates a new order and clears the cart of a specific user.
       tags:
-        - users
-        - cart
+        - Users
       parameters:
-        - in: path
-          name: id
+        - name: id
+          in: path
           schema:
             type: integer
           required: true
-          description: The ID of the user to retrieve
+          description: User ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
       responses:
-        '200':
+        '201':
+          description: Order created successfully
           content:
             application/json:
               schema:
@@ -422,13 +431,21 @@ paths:
                     type: array
                   date:
                     type: string
-                required:
-                  - id
-                  - items
-components:
-  schemas:
-    Product:
-      type: object
-    User:
-      type: object
+                  total:
+                    type: number
+
+definitions:
+  product:
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      description:
+        type: string
+      price:
+        type: number
+      stock:
+        type: integer
 
