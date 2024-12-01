@@ -1,175 +1,188 @@
 openapi: 3.0.0
+info:
+  title: API Specification
+  version: v1
 paths:
   /api/products:
     get:
-      summary: Retrieve a list of products
-      parameters:
-        - in: query
-          name: limit
-          schema:
-            type: integer
-          description: Limit the number of products returned
-        - in: query
-          name: offset
-          schema:
-            type: integer
-          description: Offset for pagination
+      summary: Retrieve a list of all products.
+      tags:
+        - Products
     post:
-      summary: Create a new product
+      summary: Create a new product.
+      tags:
+        - Products
+      parameters:
+        - name: product_name
+          in: query
+          description: Name of the product.
+          required: false
+        - name: price
+          in: query
+          description: Price of the product.
+          required: false
       requestBody:
-        required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                price:
-                  type: number
-              required:
-                - name
-                - price
-  /api/products/{id}:
-    get:
-      summary: Retrieve a product by ID
-      parameters:
-        - in: path
-          name: id
-          schema:
-            type: integer
-          description: Product ID
-          required: true
-    put:
-      summary: Update a product
-      parameters:
-        - in: path
-          name: id
-          schema:
-            type: integer
-          description: Product ID
-          required: true
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                price:
-                  type: number
-              required:
-                - name
-                - price
-    delete:
-      summary: Delete a product
-      parameters:
-        - in: path
-          name: id
-          schema:
-            type: integer
-          description: Product ID
-          required: true
+              $ref: '#/definitions/Product'
   /api/users:
     get:
-      summary: Retrieve a list of users
-      parameters:
-        - in: query
-          name: limit
-          schema:
-            type: integer
-          description: Limit the number of users returned
-        - in: query
-          name: offset
-          schema:
-            type: integer
-          description: Offset for pagination
+      summary: Retrieve a list of all users.
+      tags:
+        - Users
     post:
-      summary: Create a new user
+      summary: Create a new user.
+      tags:
+        - Users
+      parameters:
+        - name: username
+          in: query
+          description: Username of the user.
+          required: false
+        - name: password
+          in: query
+          description: Password of the user.
+          required: false
       requestBody:
-        required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                password:
-                  type: string
-              required:
-                - email
-                - password
+              $ref: '#/definitions/User'
+  /api/products/{id}:
+    get:
+      summary: Retrieve a product by ID.
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          description: ID of the product.
+          required: true
+      responses:
+        '200':
+          description: Product retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Product'
+        '404':
+          description: Product not found.
+    put:
+      summary: Update a product by ID.
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          description: ID of the product.
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/Product'
+      responses:
+        '200':
+          description: Product updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Product'
+        '404':
+          description: Product not found.
+    delete:
+      summary: Delete a product by ID.
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          description: ID of the product.
+          required: true
+      responses:
+        '204':
+          description: Product deleted successfully.
+        '404':
+          description: Product not found.
   /api/users/{id}:
     get:
-      summary: Retrieve a user by ID
+      summary: Retrieve a user by ID.
+      tags:
+        - Users
       parameters:
-        - in: path
-          name: id
-          schema:
-            type: integer
-          description: User ID
+        - name: id
+          in: path
+          description: ID of the user.
           required: true
+      responses:
+        '200':
+          description: User retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/User'
+        '404':
+          description: User not found.
     put:
-      summary: Update a user
+      summary: Update a user by ID.
+      tags:
+        - Users
       parameters:
-        - in: path
-          name: id
-          schema:
-            type: integer
-          description: User ID
+        - name: id
+          in: path
+          description: ID of the user.
           required: true
       requestBody:
-        required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                password:
-                  type: string
-              required:
-                - email
-                - password
+              $ref: '#/definitions/User'
+      responses:
+        '200':
+          description: User updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/User'
+        '404':
+          description: User not found.
     delete:
-      summary: Delete a user
+      summary: Delete a user by ID.
+      tags:
+        - Users
       parameters:
-        - in: path
-          name: id
-          schema:
-            type: integer
-          description: User ID
+        - name: id
+          in: path
+          description: ID of the user.
           required: true
+      responses:
+        '204':
+          description: User deleted successfully.
+        '404':
+          description: User not found.
   /products:
     get:
-      summary: List of filtered products
+      summary: Retrieve a list of products. Can be filtered by category, min and max prices.
       parameters:
-        - in: query
-          name: category
+        - name: category
+          in: query
           schema:
             type: string
           description: Filter products by category
-        - in: query
-          name: minPrice
+        - name: minPrice
+          in: query
           schema:
             type: number
-          description: Minimum price filter (inclusive)
-        - in: query
-          name: maxPrice
+          description: Minimum price filter
+        - name: maxPrice
+          in: query
           schema:
             type: number
-          description: Maximum price filter (exclusive)
-      responses:
-        '200':
-          description: List of filtered products
+          description: Maximum price filter
     post:
-      summary: Created product details
+      summary: Create a new product.
       requestBody:
-        required: true
         content:
           application/json:
             schema:
@@ -183,34 +196,25 @@ paths:
                   description: Product price
                 stock:
                   type: integer
-                  description: Initial product stock
-      responses:
-        '201':
-          description: Created product details
+                  description: Product stock quantity
   /products/{id}:
     get:
-      summary: Single product details
+      summary: Retrieve a single product by ID.
       parameters:
-        - in: path
-          name: id
+        - name: id
+          in: path
           schema:
             type: integer
-          description: Product ID to retrieve
-          required: true
-      responses:
-        '200':
-          description: Single product details
+          description: Product ID
     put:
-      summary: Updated product details
+      summary: Update an existing product.
       parameters:
-        - in: path
-          name: id
+        - name: id
+          in: path
           schema:
             type: integer
-          description: Product ID to update
-          required: true
+          description: Product ID
       requestBody:
-        required: true
         content:
           application/json:
             schema:
@@ -218,34 +222,27 @@ paths:
               properties:
                 name:
                   type: string
-                  description: Updated product name
+                  description: Product name
                 price:
                   type: number
-                  description: Updated product price
+                  description: Product price
                 stock:
                   type: integer
-                  description: Updated initial product stock
-      responses:
-        '200':
-          description: Updated product details
+                  description: Product stock quantity
     delete:
-      summary: Deleted product details
+      summary: Delete a product by ID.
       parameters:
-        - in: path
-          name: id
+        - name: id
+          in: path
           schema:
             type: integer
-          description: Product ID to delete
-          required: true
-      responses:
-        '200':
-          description: Deleted product details
+          description: Product ID
   /users:
     get:
-      summary: Retrieve a list of all users with minimal information for security.
+      summary: Retrieve a list of all users with minimal information.
       responses:
         '200':
-          description: List of users
+          description: A list of users
           content:
             application/json:
               schema:
@@ -259,18 +256,23 @@ paths:
                       type: string
                     email:
                       type: string
+                  required:
+                    - id
+                    - username
+                    - email
   /users/{id}:
     get:
-      summary: Retrieve a user's profile with sensitive information removed.
+      summary: Retrieve the profile information of a user.
       parameters:
-        - in: path
-          name: id
+        - name: id
+          in: path
+          description: ID of the user.
+          required: true
           schema:
             type: integer
-          required: true
       responses:
         '200':
-          description: User profile
+          description: User profile information
           content:
             application/json:
               schema:
@@ -288,9 +290,8 @@ paths:
                   - email
   /users/register:
     post:
-      summary: Register a new user.
+      summary: Create a new user account.
       requestBody:
-        required: true
         content:
           application/json:
             schema:
@@ -307,8 +308,8 @@ paths:
                 - email
                 - password
       responses:
-        '201':
-          description: Registered user details
+        '200':
+          description: Newly created user
           content:
             application/json:
               schema:
@@ -326,30 +327,42 @@ paths:
                   - email
   /users/{id}/cart:
     post:
-      summary: Add an item to a user's cart.
+      summary: Add a product to the cart of a user.
       parameters:
-        - in: path
-          name: id
+        - name: id
+          in: path
+          description: ID of the user.
+          required: true
           schema:
             type: integer
+        - name: productId
+          in: body
+          description: Product ID to add
           required: true
+          schema:
+            type: string
+        - name: quantity
+          in: body
+          description: Quantity of the product to add
+          schema:
+            type: integer
+            default: 1
       requestBody:
-        required: true
         content:
           application/json:
             schema:
               type: object
               properties:
                 productId:
-                  type: integer
+                  type: string
                 quantity:
                   type: integer
-                  minimum: 1
               required:
                 - productId
+                - quantity
       responses:
         '200':
-          description: Updated cart
+          description: Updated cart contents
           content:
             application/json:
               schema:
@@ -358,32 +371,25 @@ paths:
                   type: object
                   properties:
                     productId:
-                      type: integer
+                      type: string
                     quantity:
                       type: integer
+                  required:
+                    - productId
+                    - quantity
   /users/{id}/checkout:
     post:
-      summary: Create a new order for a user's cart and clear the cart.
+      summary: Create a new order and clear the cart of a user.
       parameters:
-        - in: path
-          name: id
+        - name: id
+          in: path
+          description: ID of the user.
+          required: true
           schema:
             type: integer
-          required: true
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                productId:
-                  type: integer
-              required:
-                - productId
       responses:
-        '201':
-          description: Created order
+        '200':
+          description: Newly created order
           content:
             application/json:
               schema:
@@ -393,10 +399,17 @@ paths:
                     type: integer
                   items:
                     type: array
-                    items:
-                      type: object
                   date:
                     type: string
                   total:
                     type: number
+                required:
+                  - id
+                  - items
+                  - date
 
+definitions:
+  Product:
+    type: object
+  User:
+    type: object
