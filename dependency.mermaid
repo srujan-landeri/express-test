@@ -1,0 +1,55 @@
+graph LR
+    subgraph Client Layer
+        A[Web/Mobile Apps]
+    end
+    
+    subgraph API Gateway Layer
+        B((API Gateway))
+    end
+    
+    subgraph Core Services Layer
+        C{Product Service}
+        D{User Service}
+        E{Order Service}
+    end
+    
+    subgraph Database Layer
+        F[Product Database]
+        G[User Database]
+        H[Order Database]
+    end
+    
+    subgraph Message Broker
+        I((Message Queue))
+    end
+    
+    subgraph External Services
+        J[Payment Gateway]
+        K[Email Service]
+    end
+    
+    A --> B
+    B --> C
+    B --> D
+    B --> E
+    C --> F
+    D --> G
+    E --> H
+    C -.-> I
+    D -.-> I
+    E -.-> I
+    I --> J
+    I --> K
+
+    style A fill:#ccf,stroke:#333,stroke-width:2px
+    style B fill:#ccf,stroke:#333,stroke-width:2px
+    style C fill:#ccf,stroke:#333,stroke-width:2px
+    style D fill:#ccf,stroke:#333,stroke-width:2px
+    style E fill:#ccf,stroke:#333,stroke-width:2px
+    style F fill:#ccf,stroke:#333,stroke-width:2px
+    style G fill:#ccf,stroke:#333,stroke-width:2px
+    style H fill:#ccf,stroke:#333,stroke-width:2px
+    style I fill:#ccf,stroke:#333,stroke-width:2px
+    style J fill:#ccf,stroke:#333,stroke-width:2px
+    style K fill:#ccf,stroke:#333,stroke-width:2px
+
